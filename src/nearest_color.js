@@ -72,7 +72,7 @@ function generateNearestColorHistograms() {
   var sampler = new Sampler(samplePixel);
   sampler.sample(img);
 
-  var graph   = new BarGraph();
+  var graph   = new BarGraph(400, 200);
 
   graph.init();
   graph.draw(colors);

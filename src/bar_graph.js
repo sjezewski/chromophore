@@ -2,17 +2,6 @@
 
 (function(){
   
-  palette = {
-    "red" : "#FF0000",
-    "green" : "#00FF00",
-    "blue" : "#0000FF",
-    "yellow" : "#FFFF00",
-    "purple" : "#FF00FF",
-    "teal" : "#00FFFF",
-    "white" : "#FFFFFF",
-    "black" : "#000000"
-  }
-
 function max(data) {
   var max = null;
   
@@ -26,11 +15,11 @@ function max(data) {
   return max;
 }
 
-function BarGraph() {
+function BarGraph(width, height) {
   this.data     = null;
   this.canvas   = document.createElement('canvas');
-  this.width = 400;
-  this.height = 400;
+  this.width = width;
+  this.height = height;
   this.padding = {
     'x' : 10,
     'y' : 40
@@ -40,7 +29,27 @@ function BarGraph() {
   this.context  = this.canvas.getContext('2d');
   document.body.appendChild(this.canvas);  
   this.type     = null;
-  this.availableColors = ['yellow','teal','purple','green','blue','red'];
+  this.availableColors = [
+    'blue',
+    'teal',
+    'green',
+    'purple',
+    'red',
+    'black',
+    'yellow',
+    'white'
+    ];
+  this.palette = {
+    "red" : "#FF0000",
+    "green" : "#00FF00",
+    "blue" : "#0000FF",
+    "yellow" : "#FFFF00",
+    "purple" : "#FF00FF",
+    "teal" : "#00FFFF",
+    "white" : "#DDDDDD",
+    "black" : "#000000"
+  }
+  
 }
 
 BarGraph.prototype = {
@@ -89,22 +98,17 @@ BarGraph.prototype = {
     console.log("width:", width, "x:", x, "top:", top);
     
     var thisColor = this.availableColors.pop();     
-    this.context.fillStyle = palette[thisColor];
-    console.log("fill color:", thisColor);
+    this.context.fillStyle = this.palette[thisColor];
+//    this.context.fillStyle = "#FF00FF";
+    console.log("fill color:", this.palette[thisColor]);
     
     this.context.fillRect(x[0], top, width*0.8, height);
+    this.context.fillStyle = "#000000";    
+    this.context.fillText(key, n * width + width*0.5, this.transformY(0) + 20, width);
   },
   
-  draw: function(histogram) {      
+  draw: function(histogram) {
     var start = new Date();
-
-    var firstPoint = true;
-    console.log(histogram);
-    var total = histogram.bins; 
-       
-//    this.context.strokeStyle = palette[thisColor]; // TODO : Make a copy first
-//    this.context.beginPath();
-
     var data = histogram.data;
 
     var count = 0;
@@ -113,8 +117,6 @@ BarGraph.prototype = {
       count++;
     }
 
-//    this.context.stroke();
-//    this.context.closePath();    
     var finish = new Date();
     console.log(start, finish);
     console.log("Time to draw:" + elapsedMilliseconds(start, finish) );    
