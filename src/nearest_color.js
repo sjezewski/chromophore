@@ -14,7 +14,6 @@ function NearestColor() {
   this.bins = 0;
   this.points = 0;
   this.max = 0;
-  console.log("initialized datA:", this.data)
 }
 
 NearestColor.prototype = {
@@ -32,10 +31,7 @@ NearestColor.prototype = {
         min = thisDistance;
       }
     }
-    
-//    console.log("Closest color:", closestColor);
-//    console.log("data:", this.data)
-    
+        
     if (this.data[closestColor] === undefined) {
       this.data[closestColor] = 1;
       this.bins++;
@@ -76,6 +72,6 @@ function generateNearestColorHistograms() {
 
   graph.init();
   graph.draw(colors);
-  console.log(colors);
+
 
 }

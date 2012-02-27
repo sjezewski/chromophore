@@ -1,7 +1,14 @@
-function Sampler(callback) {
-  this.canvas = document.createElement('canvas');
-  this.context = this.canvas.getContext('2d');
-  document.body.appendChild(this.canvas);  
+function Sampler(callback, canvas) {
+
+  if (canvas === undefined) {
+    this.canvas = document.createElement('canvas');     
+    this.context = this.canvas.getContext('2d');
+    document.body.appendChild(this.canvas);  
+  } else {
+    this.canvas = canvas;
+    this.context = this.canvas.getContext('2d');
+  }
+  
   this.callback = callback;
 }
 
