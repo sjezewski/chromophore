@@ -9,7 +9,7 @@ source = "samples/" + "high-density"
 images = Dir.entries(source)[2..-1]
 
 images.collect! do |path|
-    source + "/" + path
+    "../" + source + "/" + path
 end
 
 result = template.result(binding)
