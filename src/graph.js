@@ -21,6 +21,7 @@ function Graph() {
   this.context  = this.canvas.getContext('2d');
   document.body.appendChild(this.canvas);  
   this.type     = null;
+  this.availableColors = ['yellow','teal','purple','green','blue','red'];
 }
 
 Graph.prototype = {
@@ -55,8 +56,9 @@ Graph.prototype = {
     console.log(histogram);
     var total = histogram.bins;
     console.log("Total bins: " + total)
-
-    this.context.strokeStyle = palette['red']; // TODO : Make a copy first
+    
+    var thisColor = this.availableColors.pop();
+    this.context.strokeStyle = palette[thisColor]; // TODO : Make a copy first
     this.context.beginPath();
 
     var data = histogram.data;
@@ -67,12 +69,19 @@ Graph.prototype = {
       var x = (count / total)*400;
       console.log("key/value:", bin, value);
 //      var y = value / histogram.max; // Later scale to whatever the plot height is
-      var y = yscale(value);
+//      var y = yscale(value);
+      var y = value;
 //      var y = yscale(value)/yscale(histogram.max);
 
       console.log("Raw x/y:",x,y);
 
       var plotCoordinates = transformCoordinates(x,y);
+      console.log("Plot x/y:", plotCoordinates[0], plotCoordinates[1]);
+
+      if (firstPoint && count == 0) {
+        count++;
+        continue
+      }
 
       if (firstPoint) {
         //this.context.moveTo(transformCoordinates(x,y));
@@ -88,8 +97,8 @@ Graph.prototype = {
     }
 
     console.log("Plotted " + count + " points");
-    this.context.closePath();
     this.context.stroke();
+    this.context.closePath();    
   }
   
 }

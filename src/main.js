@@ -25,11 +25,13 @@ sampler.sample(img);
 var graph = new Graph();
 
 graph.init();
+graph.draw(histograms['red'], function(y){return Math.log(y)} );
 graph.draw(histograms['blue'], function(y){return Math.log(y)} );
+graph.draw(histograms['green'], function(y){return Math.log(y)} );
 
 var p = document.createElement("p");
 document.body.appendChild(p);
-histograms['blue'].output(p);
+//histograms['blue'].output(p);
 
 }
 
