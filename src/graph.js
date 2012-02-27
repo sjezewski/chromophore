@@ -36,14 +36,6 @@ Graph.prototype = {
     this.context.closePath();
     this.context.stroke();
 
-/*
-    this.context.strokeStyle = "#FF0000";
-    this.context.beginPath();
-    this.context.moveTo(50,50);
-    this.context.lineTo(110,110);    
-    this.context.closePath();
-    this.context.stroke();    
-*/    
   },
   
   clear: function() {
@@ -52,11 +44,12 @@ Graph.prototype = {
   },
   
   draw: function(histogram, yscale) {      
+    var start = new Date();
+
     var firstPoint = true;
     console.log(histogram);
-    var total = histogram.bins;
-    console.log("Total bins: " + total)
-    
+    var total = histogram.bins; 
+       
     var thisColor = this.availableColors.pop();
     this.context.strokeStyle = palette[thisColor]; // TODO : Make a copy first
     this.context.beginPath();
@@ -67,16 +60,13 @@ Graph.prototype = {
     for (var bin in data) {
       var value = data[bin];        
       var x = (count / total)*400;
-      console.log("key/value:", bin, value);
+
 //      var y = value / histogram.max; // Later scale to whatever the plot height is
 //      var y = yscale(value);
       var y = value;
 //      var y = yscale(value)/yscale(histogram.max);
 
-      console.log("Raw x/y:",x,y);
-
       var plotCoordinates = transformCoordinates(x,y);
-      console.log("Plot x/y:", plotCoordinates[0], plotCoordinates[1]);
 
       if (firstPoint && count == 0) {
         count++;
@@ -84,21 +74,21 @@ Graph.prototype = {
       }
 
       if (firstPoint) {
-        //this.context.moveTo(transformCoordinates(x,y));
-        console.log("Starting point:", plotCoordinates);
         this.context.moveTo(plotCoordinates[0], plotCoordinates[1]);
         firstPoint = false;
       } else {
-        console.log("Plotting point:", plotCoordinates);          
         this.context.lineTo(plotCoordinates[0], plotCoordinates[1]);          
       }
 
       count++;
     }
 
-    console.log("Plotted " + count + " points");
     this.context.stroke();
     this.context.closePath();    
+    var finish = new Date();
+    console.log(start, finish);
+    console.log("Time to draw:" + elapsedMilliseconds(start, finish) );    
+    
   }
   
 }

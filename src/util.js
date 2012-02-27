@@ -9,3 +9,10 @@ function distance(a, b) {
   return Math.sqrt( sum );
 }
 
+function elapsedMilliseconds(t1, t2) {
+  return bigMilliseconds(t2) - bigMilliseconds(t1);
+}
+
+function bigMilliseconds(t) {
+  return t.getSeconds()*1000 + t.getMilliseconds();
+}

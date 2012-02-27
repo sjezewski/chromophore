@@ -7,6 +7,8 @@ function Sampler(callback) {
 
 Sampler.prototype = {
   sample: function(img) {
+    var start = new Date();
+    
     var width = img.offsetWidth;
     var height = img.offsetHeight;
     
@@ -24,7 +26,9 @@ Sampler.prototype = {
       this.callback.call(this, thisPixel);
       pixelCount += 1;
     } 
-    
+   
+    var finish = new Date();
+    console.log("Sampling took " + elapsedMilliseconds(start, finish) + "ms");
   }
   
 }
