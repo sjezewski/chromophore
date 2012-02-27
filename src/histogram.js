@@ -50,7 +50,6 @@ function samplePixel(pixel) {
 }
 
 function generateColorHistograms() {
-console.log("processing");
 
 var img = document.body.querySelector("img");
 var sampler = new Sampler(samplePixel);
