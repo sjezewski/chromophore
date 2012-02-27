@@ -11,9 +11,9 @@ Sampler.prototype = {
     var height = img.offsetHeight;
     
     this.context.drawImage(img, 0, 0, width, height);
-    var pixels = context.getImageData(0,0,width,height).data;
+    var pixels = this.context.getImageData(0,0,width,height).data;
     
-
+    pixelCount = 0;
     for (var i = 0, n = pixels.length; i < n; i += 4) {
       var thisPixel = [
         pixels[i],
@@ -22,6 +22,7 @@ Sampler.prototype = {
       ];
       
       this.callback.call(this, thisPixel);
+      pixelCount += 1;
     } 
     
   }
