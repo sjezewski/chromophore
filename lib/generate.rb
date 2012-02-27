@@ -2,10 +2,10 @@
 
 require 'erb'
 
-template = ERB.new( File.read(ARGV[0]) )
+# source = "samples/" + "high-density"
 
-source = "samples/" + "high-density"
-
+source = "samples/" + ARGV[0]
+template = ERB.new( File.read(ARGV[1]) )
 images = Dir.entries(source)[3..-1]
 
 images.collect! do |path|
@@ -14,6 +14,6 @@ end
 
 result = template.result(binding)
 
-File.open(ARGV[1], 'w') do |f| 
+File.open(ARGV[2], 'w') do |f| 
   f.write(result)
 end

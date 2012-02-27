@@ -1,1 +1,2 @@
-lib/generate.rb lib/test.html.erb test/nearestColors.html
+lib/generate.rb high-density lib/test.html.erb test/nearestColors-high.html
+lib/generate.rb low-density lib/test.html.erb test/nearestColors-low.html

@@ -51,6 +51,73 @@ NearestColor.prototype = {
       var value = this.data[bin];
       elem.innerText += bin + "\t" + value + "\n"; 
     }
+  },
+  
+  // Guess the subject color
+  guess: function(outputElem) {
+    // First sort by descending frequencuy
+    var order = [];
+    var usedBins = {};
+    // Naive sort, but w 8 bins, I don't care
+    while(order.length < this.bins) {
+      var maxValue = null;
+      var maxBin = null;
+      
+      for(var bin in this.data) {
+        if (!usedBins[bin]) {
+          if (maxValue === null) {
+            maxValue = this.data[bin];
+            maxBin = bin;
+            continue;
+          }
+
+          if (maxValue < this.data[bin]) {
+            maxValue = this.data[bin];
+            maxBin = bin;            
+          }
+
+        }
+
+      }
+      
+      order.push(maxBin);
+      usedBins[maxBin] = true;
+      
+    }
+    
+    // Sorted. Now use the bins
+    console.log("Frequency Order:", order);
+    
+    // My manual classifier:
+    // -- Use the weighted average of the components, omitting the first two
+    
+    var guess = [0,0,0];
+    
+    // Normalize the total count by removing the top two bins' counts
+    var total = this.points - this.data[order[0]] - this.data[order[1]];
+        
+    for(var j = 2; j < order.length; j++) {
+      var binName = order[j];
+      console.log("cumulative guess:" + JSON.stringify(guess))
+      console.log("Adding " + binName + "'s component:");
+      var frequency = this.data[binName];
+      console.log("Freq:" + frequency + ", Point:" + JSON.stringify(palette[binName]));
+      var component = vectorTimesScalar(palette[binName], frequency/total);
+      guess = vectorAdd(guess, component);
+    }
+    
+    console.log("Result:", guess);
+    
+    var canvas = document.createElement('canvas');
+    outputElem.appendChild(canvas);
+    canvas.setAttribute('width', "60");
+    canvas.setAttribute('height', "60");  
+    canvas.className = "guess";
+    var context  = canvas.getContext('2d');
+    context.fillStyle = rgbToHex(guess);    
+    console.log("Guess hex:", rgbToHex(guess))
+    context.fillRect(0,0, 60,60);    
+    
   }
   
 }
@@ -77,6 +144,8 @@ function processImage(img) {
 
   graph.init();
   graph.draw(colors);
+
+  colors.guess(entry);
 
 /*
   var stats = document.createElement("p");
