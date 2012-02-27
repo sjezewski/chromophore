@@ -55,23 +55,43 @@ NearestColor.prototype = {
   
 }
 
-function generateNearestColorHistograms() {
-
+function processImage(img) {
+  var entry = img.parentElement;
+  var canvas = document.createElement('canvas');
+  entry.appendChild(canvas);
+  
   var colors  = new NearestColor();
-
-  var img     = document.body.querySelector("img");
   
   function samplePixel(pixel) {
     return colors.samplePixel(pixel);
   }
   
-  var sampler = new Sampler(samplePixel);
+  var sampler = new Sampler(samplePixel, canvas);
   sampler.sample(img);
 
-  var graph   = new BarGraph(400, 200);
+  entry.removeChild(canvas);
+  
+  var graphCanvas = document.createElement('canvas');
+  entry.appendChild(graphCanvas);
+  var graph   = new BarGraph(400, 200, graphCanvas);
 
   graph.init();
   graph.draw(colors);
+
+/*
+  var stats = document.createElement("p");
+  stats.innerText += "N : " + colors.
+
+  entry.appendChild(stats);
+*/  
+}
+
+function generateNearestColorHistograms() {
+  var imgs     = document.body.querySelectorAll("img");
+  
+  for (var i=0; i<imgs.length; i++) {
+    processImage(imgs[i]);
+  }
 
 
 }

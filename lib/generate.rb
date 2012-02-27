@@ -6,7 +6,7 @@ template = ERB.new( File.read(ARGV[0]) )
 
 source = "samples/" + "high-density"
 
-images = Dir.entries(source)[2..-1]
+images = Dir.entries(source)[3..-1]
 
 images.collect! do |path|
     "../" + source + "/" + path

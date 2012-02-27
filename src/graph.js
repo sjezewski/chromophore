@@ -61,8 +61,6 @@ Graph.prototype = {
       var value = data[bin];        
       var x = (count / total)*400;
 
-//      var y = value / histogram.max; // Later scale to whatever the plot height is
-//      var y = yscale(value);
       var y = value;
 //      var y = yscale(value)/yscale(histogram.max);
 

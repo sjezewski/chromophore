@@ -15,9 +15,15 @@ function max(data) {
   return max;
 }
 
-function BarGraph(width, height) {
+function BarGraph(width, height, canvas) {
   this.data     = null;
-  this.canvas   = document.createElement('canvas');
+  var existingCanvas = false;
+  if (canvas === null) {
+    this.canvas   = document.createElement('canvas');
+  } else {
+    existingCanvas = true;
+    this.canvas = canvas;
+  }
   this.width = width;
   this.height = height;
   this.padding = {
@@ -26,8 +32,15 @@ function BarGraph(width, height) {
   };
   this.canvas.setAttribute('width', String(this.width + 2*this.padding.x));
   this.canvas.setAttribute('height', String(this.height + 2*this.padding.y));  
+  
   this.context  = this.canvas.getContext('2d');
-  document.body.appendChild(this.canvas);  
+  
+  if (!existingCanvas) {
+    document.body.appendChild(this.canvas);      
+  }
+  
+  
+  
   this.type     = null;
   this.availableColors = [
     'blue',
@@ -84,7 +97,6 @@ BarGraph.prototype = {
   }, 
   
   draw_bar: function(n, key, histogram) {
-    console.log("drawing " + n + "th bar (" + key + ")");
 
     var width = this.width/histogram.bins;  
     var x = [
@@ -95,12 +107,9 @@ BarGraph.prototype = {
     var height = histogram.data[key]/histogram.max*this.height;
     var top = this.transformY(height);
     
-    console.log("width:", width, "x:", x, "top:", top);
-    
-    var thisColor = this.availableColors.pop();     
-    this.context.fillStyle = this.palette[thisColor];
-//    this.context.fillStyle = "#FF00FF";
-    console.log("fill color:", this.palette[thisColor]);
+    //var thisColor = this.availableColors.pop();     
+    //this.context.fillStyle = this.palette[thisColor];
+    this.context.fillStyle = "#DD00DD";
     
     this.context.fillRect(x[0], top, width*0.8, height);
     this.context.fillStyle = "#000000";    
